@@ -24,6 +24,7 @@ inSeries['belongs_to_collection'] = inSeries['belongs_to_collection'].str['name'
 noSeries = movies[movies['belongs_to_collection'].isna()]
 
 #getting equal parts inSeries and noSeries
-movies_clean = pd.concat([inSeries.sample(250, random_state=1), noSeries.sample(250, random_state=1)])
+movies_clean = pd.concat([inSeries.sample(100, random_state=1), noSeries.sample(100, random_state=1)])
 movies_clean.columns = ['series', 'release_date', 'title', 'rating']
-movies_clean.to_csv("movies_data_clean.csv", index = False)
+movies_clean.to_csv("moves_data.csv", index = False)
+movies_clean.to_json("movies_data.json", orient='records', date_format="iso")
