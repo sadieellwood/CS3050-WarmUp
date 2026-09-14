@@ -9,6 +9,7 @@ Handling dates.
 be converted to datetime easier. All dates in this format are before 1900 anyway.
 - for relevancy purposes and also to cut down the dataset, any movies prior to 2000 will also be removed.
 """
+
 movies = movies[~movies['release_date'].str.contains('-')]
 movies['release_date'] = pd.to_datetime(movies['release_date'], format='%m/%d/%Y', errors="coerce")
 movies = movies[movies['release_date'] > pd.to_datetime('2000-01-01')]
