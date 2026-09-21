@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 import customtkinter as cttk
-
+import parser as psr
 
 
 
@@ -77,6 +77,9 @@ if __name__ == '__main__':
     close_button = cttk.CTkButton(option_frame, text="close",command=close_app)
     close_button.grid(row=0, column=1, padx=5, pady=5, sticky=(E, W))
     
+    #*-----* import from parser *-----*
+    def user_parsed(_): # user query input goes here
+        return psr.parse(self, _)
     
     #*-----* Main Loop *-----*
     root.mainloop()
