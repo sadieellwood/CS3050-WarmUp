@@ -60,7 +60,7 @@ class Movie:
     # running query functions
     def validate_query():
         user_query = movie_gui.user_parsed(_)
-        # query validation (referrence example query)
+        # query validation (reference example query)
     
     def perform_firebase_query():
         pass
