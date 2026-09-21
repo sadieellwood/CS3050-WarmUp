@@ -51,9 +51,13 @@ if __name__ == '__main__':
     def close_app():
         root.destroy()
         
-    #*-----*  widgets *-----*
-
+    #*-----* import from parser *-----*
+    def user_parsed(_): # user query input goes here
+        return psr.parse(self, _)
+    
+    
         
+    #*-----*  widgets *-----*  
     
     #add widgets to frames
         
@@ -76,10 +80,6 @@ if __name__ == '__main__':
     #close button
     close_button = cttk.CTkButton(option_frame, text="close",command=close_app)
     close_button.grid(row=0, column=1, padx=5, pady=5, sticky=(E, W))
-    
-    #*-----* import from parser *-----*
-    def user_parsed(_): # user query input goes here
-        return psr.parse(self, _)
     
     #*-----* Main Loop *-----*
     root.mainloop()
