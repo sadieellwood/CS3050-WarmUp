@@ -1,6 +1,4 @@
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_connection import Firebase
 import json
 import sys
 
@@ -14,12 +12,10 @@ try:
         movie_data = json.load(f)
 
     #intialize app
-    cred = credentials.Certificate("warmup-project-6eac2-firebase-adminsdk-fbsvc-0dc17a627a.json")
-    app = firebase_admin.initialize_app(cred)
-    db = firestore.client()
+    firebase = Firebase()
 
     for movie in movie_data:
-        db.collection("movies").add(movie)
+        firebase.db.collection(firebase.collection).add(movie)
 
 except FileNotFoundError:
     print("file not found.")
