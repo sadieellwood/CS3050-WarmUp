@@ -1,4 +1,6 @@
-import admin
+import firebase_connection
+import movie_gui
+import pandas as pd
 
 class Movie:
     # constructor
@@ -40,17 +42,20 @@ class Movie:
         
     @rating.setter
     def rating(self, num):
-        if num < 0 or num > 10:
-            raise ValueError("Rating cannot be less than zero or more than ten!")
+        if num < 0 or num > 6.7:
+            raise ValueError("Rating cannot be less than 0 or more than 6.7!")
         self._rating = num
         
     
-    # adding and removing from the movies dictionary        
-    def from_dict():
-        pass
+    # convert dictionary to dataframe
+    def from_dict(dt):
+        movie_db = pd.DataFrame.from_dict(dt)
+        return movie_db
     
-    def to_dict():
-        pass
+    # convert dataframe to dictionary
+    def to_dict(db):
+        movie_dt = pd.DataFrame.to_dict(db)
+        return movie_dt
     
     # running query functions
     def validate_query():
