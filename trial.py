@@ -1,3 +1,3 @@
-from firebase_connection import getData
+from firebase_connection import perform_firebase_trial
 
-print(getData())
+print(perform_firebase_trial())
