@@ -1,6 +1,4 @@
-"""
-
-"""
+import admin
 
 class Movie:
     # constructor
