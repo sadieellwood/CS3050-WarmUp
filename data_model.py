@@ -3,6 +3,7 @@
 """
 
 class Movie:
+    # constructor
     def __init__(self, series, release_date, title, rating):
         self._series = series
         self._release_date = release_date
@@ -45,12 +46,15 @@ class Movie:
             raise ValueError("Rating cannot be less than zero or more than ten!")
         self._rating = num
         
+    
+    # adding and removing from the movies dictionary        
     def from_dict():
         pass
     
     def to_dict():
         pass
     
+    # running query functions
     def validate_query():
         pass
     
