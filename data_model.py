@@ -45,23 +45,23 @@ class Movie:
         if num < 0 or num > 6.7:
             raise ValueError("Rating cannot be less than 0 or more than 6.7!")
         self._rating = num
-        
-    
-    # convert dictionary to dataframe
+
+    # convert dictionary to dataframe (takes firebase thing and converts into list of movie objects)
     def from_dict(dt):
         movie_db = pd.DataFrame.from_dict(dt)
         return movie_db
     
-    # convert dataframe to dictionary
-    def to_dict(db):
-        movie_dt = pd.DataFrame.to_dict(db)
-        return movie_dt
+    # convert dataframe to dictionary (add this to firebase)
+#     def to_dict(db):
+#         movie_dt = pd.DataFrame.to_dict(db)
+#         return movie_dt
     
     # running query functions
     def validate_query():
         user_query = movie_gui.user_parsed(_)
-        # query validation (reference example query)
+        # query validation (make sure logically sound)
     
+    # take user input and send to firebase (same as select statement frm databases)
     def perform_firebase_query():
         pass
     
