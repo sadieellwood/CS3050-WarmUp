@@ -49,7 +49,42 @@ class Movie:
     # running query functions
     def validate_query(user_query):
         # query validation (make sure logically sound)
-        pass
+        
+        # expression 1
+        if user_query[expr1['field']] == 'Series':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr1['field']] == 'Date':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr1['field']] == 'Title':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr1['field']] == 'Rating':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+            
+        # logical operator
+        if user_query['comparison_op'] != '<' or
+            user_query['comparison_op'] != '==' or
+            user_query['comparison_op'] != '>' or
+            user_query['comparison_op'] != '>=' or
+            user_query['comparison_op'] != '=<':
+            return print('Type a logical operator')
+            
+        # expression 2
+        if user_query[expr2['field']] == 'Series':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr2['field']] == 'Date':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr2['field']] == 'Title':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
+        if user_query[expr2['field']] == 'Rating':
+            if !isInstance(user_query[expr1['value']], str):
+                return print('This is not a string!')
     
     # take user input and send to firebase (same as select statement frm databases)
     def perform_firebase_query(user_query):
@@ -60,6 +95,7 @@ class Movie:
         perform_firebase_query(user_query)
     
     # takes firebase thing and converts into list of movie objects
+    # (does not take into consideration doc yet)
     def from_dict(user_query):
         movie_list = []
         db = do_query(user_query)
