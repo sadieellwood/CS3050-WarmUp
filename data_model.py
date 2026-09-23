@@ -47,58 +47,58 @@ class Movie:
         self._rating = num
     
     # running query functions
-    def validate_query(user_query):
+    def validate_query(query):
         # query validation (make sure logically sound)
         
         # expression 1
-        if user_query[expr1['field']] == 'Series':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr1['field']] == 'Series':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr1['field']] == 'Date':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr1['field']] == 'Date':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr1['field']] == 'Title':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr1['field']] == 'Title':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr1['field']] == 'Rating':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr1['field']] == 'Rating':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
             
         # logical operator
-        if user_query['comparison_op'] != '<' or\
-        user_query['comparison_op'] != '==' or\
-        user_query['comparison_op'] != '>' or\
-        user_query['comparison_op'] != '>=' or\
-        user_query['comparison_op'] != '=<':
+        if query['comparison_op'] != '<' or \
+            query['comparison_op'] != '==' or \
+            query['comparison_op'] != '>' or \
+            query['comparison_op'] != '>=' or \
+            query['comparison_op'] != '=<':
             return print('Type a logical operator')
             
         # expression 2
-        if user_query[expr2['field']] == 'Series':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr2['field']] == 'Series':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr2['field']] == 'Date':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr2['field']] == 'Date':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr2['field']] == 'Title':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr2['field']] == 'Title':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
-        if user_query[expr2['field']] == 'Rating':
-            if isInstance(user_query[expr1['value']], str) == false:
+        if query[expr2['field']] == 'Rating':
+            if isInstance(query[expr1['value']], str) == false:
                 return print('This is not a string!')
     
-    # take user input and send to firebase (same as select statement frm databases)
-    def perform_firebase_query(user_query):
-        pass
+    # take user input and send to firebase (same as select statement from databases)
+    def perform_firebase_query(query):
+        return fire.test_name(query)
     
     def do_query(user_query):
-        validate_query(user_query)
-        perform_firebase_query(user_query)
+        valid_query = validate_query(user_query)
+        return perform_firebase_query(valid_query)
     
     # takes firebase thing and converts into list of movie objects
     # (does not take into consideration doc yet)
-    def from_dict(user_query):
+    def from_dict(query):
         movie_list = []
-        db = do_query(user_query)
+        db = do_query(query)
         for i in db:
             mov_obj = Movie(db[i][0], db[i][1], db[i][2], db[i][3])
             movie_list.append(mov_obj)
