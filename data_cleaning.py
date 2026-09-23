@@ -28,9 +28,14 @@ noSeries = movies[movies['belongs_to_collection'].isna()]
 movies_clean = pd.concat([inSeries.sample(100, random_state=1), noSeries.sample(100, random_state=1)])
 movies_clean.columns = ['series', 'release_date', 'title', 'rating']
 #clean
-movies_clean['series'] = movies_clean['series'].str.replace("'", "", regex=False)
-movies_clean['series'] = movies_clean['series'].str.replace('"', "", regex=False)
+movies_clean['series'] = movies_clean['series'].str.replace(r'[^A-Za-z0-9 ]', '', regex=True)
+movies_clean['title'] = movies_clean['title'].str.replace(r'[^A-Za-z0-9 ]', '', regex=True)
+movies_clean['series'] = movies_clean['series'].str.replace('&', 'and', regex=False)
+movies_clean['title'] = movies_clean['title'].str.replace('&', 'and', regex=False)
+movies_clean['title'] = movies_clean['title'].str.replace('!', '', regex=False)
+movies_clean['series'] = movies_clean['series'].str.replace('!', '', regex=False)
 movies_clean['title'] = movies_clean['title'].str.replace("'", "", regex=False)
+movies_clean['series'] = movies_clean['series'].str.replace("'", "", regex=False)
 #put into files
 movies_clean.to_csv("moves_data.csv", index = False)
 movies_clean.to_json("movies_data.json", orient='records', date_format="iso")
