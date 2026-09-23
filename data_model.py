@@ -52,43 +52,38 @@ class Movie:
         
         # expression 1
         if query[expr1['field']] == 'Series':
-            if isInstance(query[expr1['value']], str) == false:
+            if isinstance(query[expr1['value']], str) == False:
                 return print('This is not a string!')
         if query[expr1['field']] == 'Date':
-            if isInstance(query[expr1['value']], str) == false:
+            if isinstance(query[expr1['value']], str) == False:
                 return print('This is not a string!')
         if query[expr1['field']] == 'Title':
-            if isInstance(query[expr1['value']], str) == false:
+            if isinstance(query[expr1['value']], str) == False:
                 return print('This is not a string!')
         if query[expr1['field']] == 'Rating':
-            if isInstance(query[expr1['value']], str) == false:
+            if isinstance(query[expr1['value']], str) == False:
                 return print('This is not a string!')
             
         # logical operator
-        if query['comparison_op'] != '<' or \
-            query['comparison_op'] != '==' or \
-            query['comparison_op'] != '>' or \
-            query['comparison_op'] != '>=' or \
-            query['comparison_op'] != '=<':
-            return print('Type a logical operator')
-            
-        # expression 2
-        if query[expr2['field']] == 'Series':
-            if isInstance(query[expr1['value']], str) == false:
-                return print('This is not a string!')
-        if query[expr2['field']] == 'Date':
-            if isInstance(query[expr1['value']], str) == false:
-                return print('This is not a string!')
-        if query[expr2['field']] == 'Title':
-            if isInstance(query[expr1['value']], str) == false:
-                return print('This is not a string!')
-        if query[expr2['field']] == 'Rating':
-            if isInstance(query[expr1['value']], str) == false:
-                return print('This is not a string!')
+        if isinstance(query[logical_op]):
+            # expression 2
+            if query[expr2['field']] == 'Series':
+                if isinstance(query[expr1['value']], str) == False:
+                    return print('This is not a string!')
+            if query[expr2['field']] == 'Date':
+                if isinstance(query[expr1['value']], str) == False:
+                    return print('This is not a string!')
+            if query[expr2['field']] == 'Title':
+                if isinstance(query[expr1['value']], str) == False:
+                    return print('This is not a string!')
+            if query[expr2['field']] == 'Rating':
+                if isinstance(query[expr1['value']], str) == False:
+                    return print('This is not a string!')
     
     # take user input and send to firebase (same as select statement from databases)
     def perform_firebase_query(query):
-        return fire.test_name(query)
+        pass
+        # return fire.test_name(query)
     
     def do_query(user_query):
         valid_query = validate_query(user_query)
