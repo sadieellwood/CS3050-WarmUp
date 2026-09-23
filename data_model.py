@@ -1,5 +1,5 @@
-import firebase_connection
-import movie_gui
+import firebase_connection as fire
+import movie_gui as gui
 import pandas as pd
 
 class Movie:
@@ -45,27 +45,26 @@ class Movie:
         if num < 0 or num > 6.7:
             raise ValueError("Rating cannot be less than 0 or more than 6.7!")
         self._rating = num
-
-    # convert dictionary to dataframe (takes firebase thing and converts into list of movie objects)
-    def from_dict(dt):
-        movie_db = pd.DataFrame.from_dict(dt)
-        return movie_db
-    
-    # convert dataframe to dictionary (add this to firebase)
-#     def to_dict(db):
-#         movie_dt = pd.DataFrame.to_dict(db)
-#         return movie_dt
     
     # running query functions
-    def validate_query():
-        user_query = movie_gui.user_parsed(_)
+    def validate_query(user_query):
         # query validation (make sure logically sound)
-    
-    # take user input and send to firebase (same as select statement frm databases)
-    def perform_firebase_query():
         pass
     
-    def do_query():
-        validate_query()
-        perform_firebase_query()
+    # take user input and send to firebase (same as select statement frm databases)
+    def perform_firebase_query(user_query):
+        pass
+    
+    def do_query(user_query):
+        validate_query(user_query)
+        perform_firebase_query(user_query)
+    
+    # takes firebase thing and converts into list of movie objects
+    def from_dict(user_query):
+        movie_list = []
+        db = do_query(user_query)
+        for i in db:
+            mov_obj = Movie(db[i][0], db[i][1], db[i][2], db[i][3])
+            movie_list.append(mov_obj)
+        return movie_list
     
