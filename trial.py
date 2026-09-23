@@ -1,3 +1,8 @@
-from firebase_connection import perform_firebase_trial
+from firebase_connection import Firebase
 
-print(perform_firebase_trial())
+
+firebase = Firebase()
+docs = firebase.perform_firebase_trial()
+
+for doc in docs:
+    print(doc.to_dict())
