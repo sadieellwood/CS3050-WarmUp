@@ -2,10 +2,10 @@ import pyparsing as pp
 
 class Parser:
     # define keywords
-    SERIES = pp.CaselessKeyword("Series")
-    DATE = pp.CaselessKeyword("Date")
-    TITLE = pp.CaselessKeyword("Title")
-    RATING = pp.CaselessKeyword("Rating")
+    SERIES = pp.CaselessKeyword("series")
+    DATE = pp.CaselessKeyword("date")
+    TITLE = pp.CaselessKeyword("title")
+    RATING = pp.CaselessKeyword("rating")
 
     # define operators + set results name for dict
     logical_op = (pp.Keyword("AND") | pp.Keyword("OR"))("logical_op")
@@ -24,26 +24,60 @@ class Parser:
     # define expression format
     expr = pp.Forward()
     base_expr = pp.Group(field + comparison_op + value)
-    expr << base_expr("expr1") + pp.ZeroOrMore(logical_op + base_expr("expr2"))
+    expr << base_expr("expr1") + (logical_op + base_expr("expr2"))[..., 1] + ~(logical_op + base_expr)
+
 
     def parse(self, query):
-        # parse query using defined query language
-        result = self.expr.parse_string(query)
-        # return dict of matched tokens
-        return result.as_dict()
+        """Parses user query into a dictionary of matched tokens.
+
+        Args:
+            query (str): The user query string to be parsed.
+
+        Returns:
+            tuple[bool, dict | str]: If the query was valid, returns True and the parsed dictionary.
+                If the query was invalid, returns False and the error message.
+        """
+        try:
+            # parse query using defined query language
+            result = self.expr.parse_string(query, parse_all=True)
+            return True, result.as_dict()
+        
+        except pp.ParseException as e:
+            return False, str(e)
 
 if __name__ == "__main__":
-    # create a Parser object
+
     parser = Parser()
 
-    # TODO: Handle NULL values for optional field (series)
-    test_queries = [
+    user_query_str = "Date < 1995-10-30" # change this line to test valid/invalid queries
+    is_valid, details = parser.parse(user_query_str)
+    if is_valid:
+        print(f"Valid Query: {is_valid}\nDict: {details}")
+    else:
+        print(f"Valid Query: {is_valid}\nError Message: {details}")
+
+    # for testing
+    valid_queries = [
         "Date < 1995-10-30",
         "Title == 'Night at the Museum: Secret of the Tomb'",
-        "rating > 5.0 AND rating < 3.0",
-        "Title == Magic & Bird: A Courtship of Rivals",
+        "rating < 5.0 AND rating > 3.0",
         "Title == Loose Change: 2nd Edition",
-        "Title == Pokemon Ranger and the Temple of the Sea"]
+        "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0"
+        ]
 
-    for query in test_queries:
-        print(parser.parse(query))
+    invalid_queries = [
+        "age = 21.0" # incorrect field keyword
+        "rating = 2.0", # incorrect comparison_op (must be ==)
+        "rating < 5.0 and rating > 3.0" # incorrect logical_op (must be AND)
+        "series == None OR rating == 0.0 OR date < 1995-10-30" # conjoined query w/ more than two conditions 
+    ]
+
+    # for GUI help window
+    help_ex_queries = [
+        "series == 'Divergent Collection'", # handles quoted + unquoted strings
+        "Date > 2010-01-01", 
+        "TITLE == The Hills Have Eyes",
+        "rating <= 6.0",
+        "rating > 3 AND rating < 7", # conjoined statement ex.
+        "series == None OR rating == 0.0" # NULL series ex. (optional field)
+    ]
