@@ -3,17 +3,19 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter, Or
 
+
 class Firebase:
 
-    
-    cred = credentials.Certificate("warmup-project-6eac2-firebase-adminsdk-fbsvc-0dc17a627a.json")
+    cred = credentials.Certificate(
+        "warmup-project-6eac2-firebase-adminsdk-fbsvc-0dc17a627a.json"
+    )
     app = firebase_admin.initialize_app(cred)
     collection = firestore.client().collection("movies")
 
     def perform_firebase_query(self, query_spec: dict):
-        #construct query
+        # construct query
         query = self.collection(self.collection).where(
-        filter=Or(
+            filter=Or(
                 [
                     FieldFilter("rating", ">", 6.7),
                     FieldFilter("title", "==", "One Breath"),
@@ -25,7 +27,7 @@ class Firebase:
         return docs
 
     def perform_firebase_trial(self):
-        #construct query
+        # construct query
         """
         query = self.db.collection(self.collection).where(
                 filter=Or(
@@ -37,7 +39,10 @@ class Firebase:
                 )
         """
 
-        query = (self.db.collection(self.collection).where(
-                filter=FieldFilter("rating", "==", 5)).get())
-        
+        query = (
+            self.db.collection(self.collection)
+            .where(filter=FieldFilter("rating", "==", 5))
+            .get()
+        )
+
         return query
