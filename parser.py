@@ -1,5 +1,6 @@
 import pyparsing as pp
 
+
 class Parser:
     # define keywords
     SERIES = pp.CaselessKeyword("series")
@@ -16,7 +17,9 @@ class Parser:
 
     # handle multi-word value strings
     unquoted_word = ~logical_op + pp.Word(pp.alphanums + ".:-()")
-    unquoted_val = pp.Combine(unquoted_word + pp.ZeroOrMore(pp.White(" ") + unquoted_word))
+    unquoted_val = pp.Combine(
+        unquoted_word + pp.ZeroOrMore(pp.White(" ") + unquoted_word)
+    )
 
     # define value + set results name for dict
     value = (pp.QuotedString("'") | unquoted_val)("value")
@@ -24,8 +27,9 @@ class Parser:
     # define expression format
     expr = pp.Forward()
     base_expr = pp.Group(field + comparison_op + value)
-    expr << base_expr("expr1") + (logical_op + base_expr("expr2"))[..., 1] + ~(logical_op + base_expr)
-
+    expr << base_expr("expr1") + (logical_op + base_expr("expr2"))[..., 1] + ~(
+        logical_op + base_expr
+    )
 
     def parse(self, query):
         """Parses user query into a dictionary of matched tokens.
@@ -45,20 +49,21 @@ class Parser:
             for key in result.keys():
                 if key == "logical_op":
                     pass
-                
+
                 elif "rating" in result[key].values():
                     result[key]["value"] = float(result[key]["value"])
 
             return True, result
-        
+
         except pp.ParseException as e:
             return False, str(e)
+
 
 if __name__ == "__main__":
 
     parser = Parser()
 
-    user_query_str = "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0" # change this line to test valid/invalid queries
+    user_query_str = "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0"  # change this line to test valid/invalid queries
     is_valid, details = parser.parse(user_query_str)
     if is_valid:
         print(f"Valid Query: {is_valid}\nDict: {details}")
@@ -71,22 +76,22 @@ if __name__ == "__main__":
         "Title == 'Night at the Museum: Secret of the Tomb'",
         "rating < 5.0 AND rating > 3.0",
         "Title == Loose Change: 2nd Edition",
-        "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0"
-        ]
+        "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0",
+    ]
 
     invalid_queries = [
-        "age = 21.0" # incorrect field keyword
-        "rating = 2.0", # incorrect comparison_op (must be ==)
-        "rating < 5.0 and rating > 3.0" # incorrect logical_op (must be AND)
-        "series == None OR rating == 0.0 OR date < 1995-10-30" # conjoined query w/ more than two conditions 
+        "age = 21.0"  # incorrect field keyword
+        "rating = 2.0",  # incorrect comparison_op (must be ==)
+        "rating < 5.0 and rating > 3.0"  # incorrect logical_op (must be AND)
+        "series == None OR rating == 0.0 OR date < 1995-10-30",  # conjoined query w/ more than two conditions
     ]
 
     # for GUI help window
     help_ex_queries = [
-        "series == 'Divergent Collection'", # handles quoted + unquoted strings
-        "Date > 2010-01-01", 
+        "series == 'Divergent Collection'",  # handles quoted + unquoted strings
+        "Date > 2010-01-01",
         "TITLE == The Hills Have Eyes",
         "rating <= 6.0",
-        "rating > 3 AND rating < 7", # conjoined statement ex.
-        "series == None OR rating == 0.0" # NULL series ex. (optional field)
+        "rating > 3 AND rating < 7",  # conjoined statement ex.
+        "series == None OR rating == 0.0",  # NULL series ex. (optional field)
     ]
