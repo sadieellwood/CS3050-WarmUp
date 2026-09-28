@@ -56,14 +56,15 @@ class Parser:
             return True, result
 
         except pp.ParseException as e:
-            return False, str(e)
+            message = "Invalid syntax! Check help window."
+            return False, message
 
 
 if __name__ == "__main__":
 
     parser = Parser()
 
-    user_query_str = "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0"  # change this line to test valid/invalid queries
+    user_query_str = "series == None OR rating == 0.0 OR date < 1995-10-30"  # change this line to test valid/invalid queries
     is_valid, details = parser.parse(user_query_str)
     if is_valid:
         print(f"Valid Query: {is_valid}\nDict: {details}")
