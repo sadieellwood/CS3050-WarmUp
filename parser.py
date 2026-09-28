@@ -56,7 +56,7 @@ class Parser:
             return True, result
 
         except pp.ParseException as e:
-            message = "Invalid syntax! Check help window."
+            message = "Invalid query! Check help window for correct syntax."
             return False, message
 
 
