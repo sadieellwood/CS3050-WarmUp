@@ -2,7 +2,8 @@
 from tkinter import *
 from tkinter import ttk
 import customtkinter as cttk
-import parser as psr
+from parser import Parser
+from movie import Movie
 
 # *----* Main *----*
 if __name__ == "__main__":
@@ -39,13 +40,15 @@ if __name__ == "__main__":
     #search method
     def search():
         print(search_box.get())
-        #user_q(search_box.get())
+        user_q(search_box.get())
         fill_results(['1', '2', '3', '4', '5', search_box.get()])
         
         
     def user_q(user_search_input):
-        parse_results = psr.parse(user_serach_input)
-        results = do_query(parse_results)
+        user_parsed(user_search_input)
+        
+        # do not use do_query for this!
+        # results = mov.do_query(parse_results)
         fill_results(results)
 
     def fill_results(results):
@@ -60,40 +63,41 @@ if __name__ == "__main__":
         root.destroy()
         
     # *-----* import from parser *-----*
-    def user_parsed(_):  # user query input goes here
-        return psr.parse(self, _)
+    def user_parsed(user_search_input):
+        psr = Parser()
+        return psr.parse(user_search_input)
 
     # *-----*  widgets *-----*
     #*-----* top help window *-----*
-#     def open_help_window():
-#         help_window = Toplevel()
-#         help_window.geometry(HELPRESOLUTION)
-#         
-#         help_window.label = cttk.CTkLabel(text = "Parser Information:")
-#         help_information = ["help info starts here",
-#                             "random information",
-#                             "help info ends here"]
-#         
-#         
-#         help_frame = cttk.CTkFrame(help_window)
-#         help_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky=(N, S))
-#         
-#         help_box = cttk.CTkEntry(help_frame, width=300, height=30)
-#         help_box.grid(row=1, column=0, padx=10, pady=(10, 0), sticky=(N,S))
-#         
-#         top_close_button = cttk.CTkButton(help_window,
-#                 text = "close", command = help_window.destroy)
-#         top_close_button.grid(row=2, column=0, padx=10, pady=(10, 0),
-#                               sticky=(N,S))
-#         i = 0
-#         for text in help_information:
-#             help_box.insert(i, text)
-#             help_box.insert(i, "\n")
-#             i += 1
-#             
-#         help_box.configure(state='disabled')
-#         
-#         help_box.mainloop()
+    def open_help_window():
+        help_window = Toplevel()
+        help_window.geometry(HELPRESOLUTION)
+        
+        help_window.label = cttk.CTkLabel(text = "Parser Information:")
+        help_information = ["help info starts here",
+                            "random information",
+                            "help info ends here"]
+        
+        
+        help_frame = cttk.CTkFrame(help_window)
+        help_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky=(N, S))
+        
+        help_box = cttk.CTkEntry(help_frame, width=300, height=30)
+        help_box.grid(row=1, column=0, padx=10, pady=(10, 0), sticky=(N,S))
+        
+        top_close_button = cttk.CTkButton(help_window,
+                text = "close", command = help_window.destroy)
+        top_close_button.grid(row=2, column=0, padx=10, pady=(10, 0),
+                              sticky=(N,S))
+        i = 0
+        for text in help_information:
+            help_box.insert(i, text)
+            help_box.insert(i, "\n")
+            i += 1
+            
+        help_box.configure(state='disabled')
+        
+        help_box.mainloop()
     
     # add widgets to frames
 
