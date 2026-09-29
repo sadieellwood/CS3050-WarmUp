@@ -1,5 +1,5 @@
 from firebase_connection import Firebase
-import pandas as pd
+from datetime import datetime
 
 
 class Movie:
@@ -46,70 +46,75 @@ class Movie:
             raise ValueError("Rating cannot be less than 0 or more than 6.7!")
         self._rating = num
 
-    # running query functions
-    def validate_query(query):
-        
-        # convert date into actual date object with try except
-        
-        try:
-            # convert rating into float
-            for key in result.keys():
-                if key == "logical_op":
-                    pass
+    def __str__(self):
+        string = f"{self.title}"
 
-                elif "rating" in result[key].values():
-                    result[key]["value"] = float(result[key]["value"])
+        if self.series != None:
+            string + f" from the {self.series}"
 
-            return True, result
+        return string
 
-        except pp.ParseException as e:
-            message = "Invalid query! Check help window for correct syntax."
-            return False, message
-        
-        # query validation (make sure logically sound)
+# running query functions
+@staticmethod
+def validate_query(query_spec):
 
-        # expression 1
-        if query[expr1["field"]] == "Series":
-            if isinstance(query[expr1["value"]], str) == False:
-                return print("This is not a string!")
-        if query[expr1["field"]] == "Date":
-            if isinstance(query[expr1["value"]], str) == False:
-                return print("This is not a string!")
-        if query[expr1["field"]] == "Title":
-            if isinstance(query[expr1["value"]], str) == False:
-                return print("This is not a string!")
-        if query[expr1["field"]] == "Rating":
-            if isinstance(query[expr1["value"]], float) == False:
-                return print("This is not a float!")
+    # convert date into actual date object with try except
+    try:
+        # convert rating into float
+        current_test = ("rating", "number")
 
-        # logical operator
-        if isinstance(query[logical_op]):
-            # expression 2
-            if query[expr2["field"]] == "Series":
-                if isinstance(query[expr1["value"]], str) == False:
-                    return print("This is not a string!")
-            if query[expr2["field"]] == "Date":
-                if isinstance(query[expr1["value"]], str) == False:
-                    return print("This is not a string!")
-            if query[expr2["field"]] == "Title":
-                if isinstance(query[expr1["value"]], str) == False:
-                    return print("This is not a string!")
-            if query[expr2["field"]] == "Rating":
-                if isinstance(query[expr1["value"]], float) == False:
-                    return print("This is not a float!")
+        for key in query_spec.keys():
+            if key == "logical_op":
+                pass
+            elif "rating" in query_spec[key].values():
+                query_spec[key]["value"] = float(query_spec[key]["value"])
 
-    def do_query(user_query):
-        #declare firebase
-        fire = Firebase()
-        valid_query = validate_query(user_query)
-        return fire.perform_firebase_query(self, valid_query)
+        current_test = ("release date", "date in the form YYYY-MM-DD")
+        for key in query_spec.keys():
+            if key == "logical_op":
+                pass
 
-    # takes firebase thing and converts into list of movie objects
-    # (does not take into consideration doc yet)
-    def from_dict(query):
-        movie_list = []
-        db = do_query(query)
-        for i in db:
-            mov_obj = Movie(db[i][0], db[i][1], db[i][2], db[i][3])
-            movie_list.append(mov_obj)
-        return movie_list
+            elif "release_date" in query_spec[key].values():
+                query_spec[key]["value"] = datetime.fromisoformat(
+                    query_spec[key]["value"] + "T00:00:00Z"
+                )
+
+    except ValueError as e:
+        message = f"Invalid query! {current_test[0]} must be a {current_test[1]}"
+        return False, message
+
+    return True, "passed"
+
+# takes firebase thing and converts into list of movie objects
+# (does not take into consideration doc yet)
+@staticmethod
+def from_dict(dictionary):
+    try:
+        movie = Movie(
+            dictionary["series"],
+            dictionary["release_date"],
+            dictionary["title"],
+            dictionary["rating"],
+        )
+        return movie
+    except KeyError:
+        return "dictionary missing key"
+
+
+def do_query(user_query):
+
+    # declare firebase
+    fire = Firebase()
+
+    valid_query = validate_query(user_query)
+
+    if valid_query[0]:
+        #returns a list of dictionaries
+        query_results = fire.perform_firebase_query(user_query)
+
+        # make each dictionary an instance of movie
+        query_results =[from_dict(result) for result in query_results]
+
+        return query_results
+    # this will return (False, errorMessage) if query is not valid
+    return valid_query

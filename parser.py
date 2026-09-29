@@ -44,15 +44,7 @@ class Parser:
         try:
             # parse query using defined query language
             result = self.expr.parse_string(query, parse_all=True).as_dict()
-
-            # convert rating into float
-            for key in result.keys():
-                if key == "logical_op":
-                    pass
-
-                elif "rating" in result[key].values():
-                    result[key]["value"] = float(result[key]["value"])
-
+            
             return True, result
 
         except pp.ParseException as e:
@@ -64,7 +56,7 @@ if __name__ == "__main__":
 
     parser = Parser()
 
-    user_query_str = "series == None OR rating == 0.0 OR date < 1995-10-30"  # change this line to test valid/invalid queries
+    user_query_str = "Date < 1995-10-30" # change this line to test valid/invalid queries
     is_valid, details = parser.parse(user_query_str)
     if is_valid:
         print(f"Valid Query: {is_valid}\nDict: {details}")

@@ -1,6 +1,7 @@
 from firebase_connection import Firebase
 import json
 import sys
+from datetime import datetime
 
 # get arg w/ json file
 filename = sys.argv[1]
@@ -21,7 +22,12 @@ try:
 
     # add movies from json
     for movie in movie_data:
-        firebase.collection.add(movie)
+        firebase.collection.add({
+            "title": movie['title'],
+            "rating": movie['rating'],
+            "series": movie['series'],
+            "release_date": datetime.fromisoformat(movie['release_date']),
+            })
 
 except FileNotFoundError:
     print("file not found.")

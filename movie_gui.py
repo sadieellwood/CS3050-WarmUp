@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import ttk
 import customtkinter as cttk
 from parser import Parser
-from movie import Movie
+from movie import Movie, do_query
 
 # *----* Main *----*
 if __name__ == "__main__":
@@ -45,10 +45,20 @@ if __name__ == "__main__":
         
         
     def user_q(user_search_input):
-        user_parsed(user_search_input)
+
+        #returns a tuple containing (True or False, results)
+        parse_results = user_parsed(user_search_input)
+        if parse_results[0]:
+
+            #results will contain list of movie objects if query valid, otherwise it will contain (False, errorMessage)
+            results = do_query(parse_results[1])
+            for result in results:
+                print(str(result))
+
+        else:
+            #TODO: handle invalid queries here
+            pass
         
-        # do not use do_query for this!
-        # results = mov.do_query(parse_results)
         fill_results(results)
 
     def fill_results(results):
