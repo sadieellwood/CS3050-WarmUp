@@ -3,7 +3,9 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter, Or
 
-
+"""
+The Firebase class encapsulates the connection to the firebase datestore
+"""
 class Firebase:
 
     cred = credentials.Certificate(
@@ -16,8 +18,8 @@ class Firebase:
     Takes a dictionary containing the query specs and returns a dictionary of the firebase query results
     """
     def perform_firebase_query(self, query_spec: dict):
-        print(query_spec)
         #Handling the logical OR case
+        print(query_spec)
         if "OR" in query_spec.values():
 
             query = self.collection.where(

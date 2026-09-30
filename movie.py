@@ -98,6 +98,8 @@ def validate_query(query_spec):
                 current_test = ("series", "used with ==")
                 if query_spec[key]["comparison_op"] != "==":
                     raise ValueError
+
+        # converting "None" string to type None
                 
                 
     except ValueError as e:
@@ -110,7 +112,6 @@ def validate_query(query_spec):
 # (does not take into consideration doc yet)
 @staticmethod
 def from_dict(dictionary):
-    print(dictionary)
     try:
         movie = Movie(
             dictionary["series"],
