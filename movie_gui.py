@@ -2,7 +2,6 @@
 from tkinter import *
 from tkinter import ttk
 import customtkinter as cttk
-from cryptography.hazmat.asn1.asn1 import NoneType
 
 from parser import Parser
 from movie import Movie, do_query
@@ -44,18 +43,11 @@ if __name__ == "__main__":
     def search():
         search_input = search_box.get()
 
-        if search_input == NoneType:
+        if search_input == "":
             pass
 
         else:
-            results = user_q(search_box.get())
-            result_list = []
-
-            for value in results:
-                result_list.append(value)
-                print(value)
-
-            fill_results(user_q(search_box.get()))
+            user_q(search_input)
 
     def user_q(user_search_input):
 
