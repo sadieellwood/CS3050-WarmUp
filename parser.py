@@ -51,6 +51,7 @@ class Parser:
             message = "Invalid query! Check help window for correct syntax."
             return False, message
 
+"""
 
 if __name__ == "__main__":
 
@@ -87,3 +88,5 @@ if __name__ == "__main__":
         "rating > 3 AND rating < 7",  # conjoined statement ex.
         "series == None OR rating == 0.0",  # NULL series ex. (optional field)
     ]
+
+"""

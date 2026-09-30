@@ -19,7 +19,6 @@ class Firebase:
     """
     def perform_firebase_query(self, query_spec: dict):
         #Handling the logical OR case
-        print(query_spec)
         if "OR" in query_spec.values():
 
             query = self.collection.where(
