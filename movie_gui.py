@@ -142,18 +142,18 @@ if __name__ == "__main__":
             "LOGICAL OPERATORS:",
             "You can specify up to 2 conditions in your query using",
             "'AND' and 'OR'",
-            "\t example queries:",
-            "\t\tseries == None OR rating == 0.0",
-            "\t\trating > 3 AND rating < 7",
+            "example queries:",
+            "\tseries == None OR rating == 0.0",
+            "\trating > 3 AND rating < 7",
             "",
             "-----------",
             "MORE EXAMPLES:",
-            "series == 'Divergent Collection'",  # handles quoted + unquoted strings
-            "Date > 2010-01-01",
-            "TITLE == The Hills Have Eyes",
-            "rating <= 6.0",
-            "rating > 3 AND rating < 7",  # conjoined statement ex.
-            "series == None OR rating == 0.0",  # NULL series ex. (optional field)
+            "\tseries == 'Divergent Collection'",  # handles quoted + unquoted strings
+            "\tDate > 2010-01-01",
+            "\tTITLE == The Hills Have Eyes",
+            "\trating <= 6.0",
+            "\trating > 3 AND rating < 7",  # conjoined statement ex.
+            "\tseries == None OR rating == 0.0",  # NULL series ex. (optional field)
         ]
 
 
