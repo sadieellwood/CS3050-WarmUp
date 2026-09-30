@@ -98,8 +98,9 @@ def validate_query(query_spec):
                 current_test = ("series", "used with ==")
                 if query_spec[key]["comparison_op"] != "==":
                     raise ValueError
-
-        # converting "None" string to type None
+                # converting "None" string to type None
+                if query_spec[key]["value"] == "None":
+                    query_spec[key]["value"] = None
                 
                 
     except ValueError as e:
