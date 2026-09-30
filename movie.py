@@ -60,7 +60,7 @@ def validate_query(query_spec):
 
     # convert date into actual date object with try except
     try:
-        # convert rating into float
+        # checking that rating is a number
         current_test = ("Rating", "a number")
         for key in query_spec.keys():
             if key == "logical_op":
@@ -73,6 +73,7 @@ def validate_query(query_spec):
                     current_test = ("Rating", "between 0 and 10")
                     raise ValueError
 
+        # checking that date is actually a date
         current_test = ("Date", "a date in the form YYYY-MM-DD")
         for key in query_spec.keys():
             if key == "logical_op":
@@ -83,6 +84,22 @@ def validate_query(query_spec):
                     query_spec[key]["value"] + " 00:00:00"
                 ).replace(tzinfo=timezone.utc)
 
+        # checking that series and title are only using == operators 
+        for key in query_spec.keys():
+            if key == "logical_op":
+                pass
+
+            elif "title" in query_spec[key].values():
+                current_test = ("title", "used with ==")
+                if query_spec[key]["comparison_op"] != "==":
+                    raise ValueError
+
+            elif "series" in query_spec[key].values():
+                current_test = ("series", "used with ==")
+                if query_spec[key]["comparison_op"] != "==":
+                    raise ValueError
+                
+                
     except ValueError as e:
         message = f"Invalid query! {current_test[0]} must be {current_test[1]}"
         return False, message
