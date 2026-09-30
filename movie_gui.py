@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # *-----*  widgets *-----*
     # *-----* top help window *-----*
-     def open_help_window():
+    def open_help_window():
         help_window = Toplevel()
         help_window.geometry(HELPRESOLUTION)
 
