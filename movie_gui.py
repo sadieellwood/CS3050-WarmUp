@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     # init vars
     RESOLUTION = "700x600"
-    HELPRESOLUTION = "350x500"
+    HELPRESOLUTION = "500x500"
 
     # tkinter preference stuff
     cttk.set_appearance_mode("dark")
@@ -115,22 +115,22 @@ if __name__ == "__main__":
             "\t can be used with ==, >=, <=, >, and <",
             "\t example query: rating <= 6.0",
             "-----------",
-            "Series",
-            "\t can only be used with ==",
-            "\t to search for movies not a part of a series, use 'None'"
-            "\t example query: series == The Toy Story Collection",
+            "Series:",
+            "can only be used with ==",
+            "to search for movies not a part of a series,",
+            "use 'None'",
+            "example query: series == The Toy Story Collection",
             "",
-            "Search keywords are not case sensitive, but title and series names are!",
+            "Search keywords are not case sensitive,",
+            "but title and series names are!",
             "",
-            "LOGICAL OPERATORS",
-            "\t You can specify up to 2 conditions in your query using 'AND' and 'OR'",
+            "LOGICAL OPERATORS:",
+            "You can specify up to 2 conditions in your query using",
+            "'AND' and 'OR'",
             "\t example queries:",
             "\t\t series == None OR rating == 0.0",
             "\t\t rating > 3 AND rating < 7",
-        ]
-
-        help_information = [
-            "example queries:",
+            "Examples:",
             "series == 'Divergent Collection'",  # handles quoted + unquoted strings
             "Date > 2010-01-01",
             "TITLE == The Hills Have Eyes",
@@ -139,10 +139,11 @@ if __name__ == "__main__":
             "series == None OR rating == 0.0",  # NULL series ex. (optional field)
         ]
 
+
         help_frame = cttk.CTkFrame(help_window)
         help_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky=(N, S))
 
-        help_box = cttk.CTkTextbox(help_frame, width=300, height=300)
+        help_box = cttk.CTkTextbox(help_frame, width=425, height=300)
         help_box.grid(row=1, column=0, padx=10, pady=(10, 0), sticky=(N, S))
 
         top_close_button = cttk.CTkButton(
