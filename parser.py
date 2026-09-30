@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     parser = Parser()
 
-    user_query_str = "Date < 1995-10-30" # change this line to test valid/invalid queries
+    user_query_str = "series == 'Ice Age Collection'" # change this line to test valid/invalid queries
     is_valid, details = parser.parse(user_query_str)
     if is_valid:
         print(f"Valid Query: {is_valid}\nDict: {details}")
@@ -76,11 +76,15 @@ if __name__ == "__main__":
         "rating = 2.0",  # incorrect comparison_op (must be ==)
         "rating < 5.0 and rating > 3.0"  # incorrect logical_op (must be AND)
         "series == None OR rating == 0.0 OR date > 1995-10-30",  # conjoined query w/ more than two conditions
+        "title > The Hills Have Eyes", # incorrect comparison_op for title (must be ==)
+        "date == 'January 1st, 2010'", # incorrect date value (must be YYYY-MM-DD)
+        "rating == -5", # incorrect rating value (num 0-10)
+        "rating == Nine", # incorrect rating value (num 0-10)
     ]
 
     # for GUI help window
     help_ex_queries = [
-        "series == 'Divergent Collection'",  # handles quoted + unquoted strings
+        "series == 'Divergent Collection'",  # handles single quotes + unquoted strings
         "Date > 2010-01-01",
         "TITLE == The Hills Have Eyes",
         "rating <= 6.0",
