@@ -16,7 +16,7 @@ class Firebase:
     Takes a dictionary containing the query specs and returns a dictionary of the firebase query results
     """
     def perform_firebase_query(self, query_spec: dict):
-
+        print(query_spec)
         #Handling the logical OR case
         if "OR" in query_spec.values():
 
@@ -58,24 +58,3 @@ class Firebase:
         for document in results:
             response.append(document.to_dict())
         return response
-
-    def perform_firebase_trial(self):
-        # construct query
-        """
-        query = self.db.collection(self.collection).where(
-                filter=Or(
-                        [
-                            FieldFilter("rating", ">", 6.7),
-                            FieldFilter("title", "==", "One Breath"),
-                        ]
-                    )
-                )
-        """
-
-        query = (
-            self.db.collection(self.collection)
-            .where(filter=FieldFilter("rating", "==", 5))
-            .get()
-        )
-
-        return query

@@ -1,7 +1,7 @@
 from firebase_connection import Firebase
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
 # get arg w/ json file
 filename = sys.argv[1]
@@ -22,11 +22,13 @@ try:
 
     # add movies from json
     for movie in movie_data:
+        movie_timestamp = movie['release_date'][:10] + " 00:00:00"
+        print(movie_timestamp)
         firebase.collection.add({
             "title": movie['title'],
             "rating": movie['rating'],
             "series": movie['series'],
-            "release_date": datetime.fromisoformat(movie['release_date']),
+            "date": datetime.fromisoformat(movie_timestamp).replace(tzinfo=timezone.utc),
             })
 
 except FileNotFoundError:

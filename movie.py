@@ -1,5 +1,5 @@
 from firebase_connection import Firebase
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class Movie:
@@ -47,7 +47,7 @@ class Movie:
         self._rating = num
 
     def __str__(self):
-        string = f"{self.title}"
+        string = f"{self.title} ({self.release_date.year})"
 
         if self.series != None:
             string + f" from the {self.series}"
@@ -61,38 +61,43 @@ def validate_query(query_spec):
     # convert date into actual date object with try except
     try:
         # convert rating into float
-        current_test = ("rating", "number")
-
+        current_test = ("Rating", "a number")
         for key in query_spec.keys():
             if key == "logical_op":
                 pass
             elif "rating" in query_spec[key].values():
                 query_spec[key]["value"] = float(query_spec[key]["value"])
 
-        current_test = ("release date", "date in the form YYYY-MM-DD")
+                #rating should not be negative or greater than 10
+                if query_spec[key]["value"] > 10 or query_spec[key]["value"] < 0:
+                    current_test = ("Rating", "between 0 and 10")
+                    raise ValueError
+
+        current_test = ("Date", "a date in the form YYYY-MM-DD")
         for key in query_spec.keys():
             if key == "logical_op":
                 pass
 
-            elif "release_date" in query_spec[key].values():
+            elif "date" in query_spec[key].values():
                 query_spec[key]["value"] = datetime.fromisoformat(
-                    query_spec[key]["value"] + "T00:00:00Z"
-                )
+                    query_spec[key]["value"] + " 00:00:00"
+                ).replace(tzinfo=timezone.utc)
 
     except ValueError as e:
-        message = f"Invalid query! {current_test[0]} must be a {current_test[1]}"
+        message = f"Invalid query! {current_test[0]} must be {current_test[1]}"
         return False, message
 
-    return True, "passed"
+    return True, query_spec
 
 # takes firebase thing and converts into list of movie objects
 # (does not take into consideration doc yet)
 @staticmethod
 def from_dict(dictionary):
+    print(dictionary)
     try:
         movie = Movie(
             dictionary["series"],
-            dictionary["release_date"],
+            dictionary["date"],
             dictionary["title"],
             dictionary["rating"],
         )
@@ -110,11 +115,11 @@ def do_query(user_query):
 
     if valid_query[0]:
         #returns a list of dictionaries
-        query_results = fire.perform_firebase_query(user_query)
+        query_results = fire.perform_firebase_query(valid_query[1])
 
         # make each dictionary an instance of movie
         query_results =[from_dict(result) for result in query_results]
 
-        return query_results
+        return (True, query_results)
     # this will return (False, errorMessage) if query is not valid
     return valid_query

@@ -46,12 +46,14 @@ if __name__ == "__main__":
 
         if search_input == NoneType:
             pass
+
         else:
             results = user_q(search_box.get())
             result_list = []
 
             for value in results:
                 result_list.append(value)
+                print(value)
 
             fill_results(user_q(search_box.get()))
         
@@ -62,14 +64,18 @@ if __name__ == "__main__":
         parse_results = user_parsed(user_search_input)
         if parse_results[0]:
 
-            #results will contain list of movie objects if query valid, otherwise it will contain (False, errorMessage)
+            
             #TODO: this is returning the parse reults only, not any database q from results
             # need to have it return movie items, then display.
             print_results = []
-            movie_list = do_query(parse_results[1])
+            #results will contain True and a list of movie objects if query valid, otherwise it will contain (False, errorMessage)
+            query_results = do_query(parse_results[1])
 
-            for value in movie_list:
-                print_results.append(str(value))
+            if query_results[0]:
+                for value in query_results[1]:
+                    print_results.append(str(value))
+            else:
+                print_results = [query_results[1]]
 
         else:
             #TODO: handle invalid queries here
