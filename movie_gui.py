@@ -43,51 +43,66 @@ if __name__ == "__main__":
     def search():
         search_input = search_box.get()
 
+        #if user search is empty, keep previously display results out
         if search_input == "":
             pass
-
+            
+        #otherwise pass user search to the query function
         else:
             user_q(search_input)
 
+    #check if parse is valid, then pass to query
+    #check if query is valid then pass to be inserted if so
     def user_q(user_search_input):
 
         # returns a tuple containing (True or False, results)
         parse_results = user_parsed(user_search_input)
+
+        #if true then parser had no errors
         if parse_results[0]:
 
-            # TODO: this is returning the parse reults only, not any database q from results
-            # need to have it return movie items, then display.
             print_results = []
-            # results will contain True and a list of movie objects if query valid, otherwise it will contain (False, errorMessage)
+
+            #send parse results to query
             query_results = do_query(parse_results[1])
 
+            #if query returns no error put results in a list
+            #and send to fillout the textbox
             if query_results[0]:
                 for value in query_results[1]:
                     print_results.append(str(value))
+            #otherwise print error
             else:
                 print_results = [query_results[1]]
 
+        #otherwise parse was invalid, print error message to textbox
         else:
-            # TODO: handle invalid queries here
             print_results = [parse_results[1]]
 
+        #send result, (good or bad to be filled out)
         fill_results(print_results)
 
+    #fill textbox with given list of results
     def fill_results(results):
 
+        #reopen the text box to be editable
+        #and clear
         result_box.configure(state="normal")
         result_box.delete(1.0, END)
 
+        #insert all results and format
         for line in results:
             result_box.insert(END, line)
             result_box.insert(END, "\n---------------- \n")
 
+        #disable box to no longer be edit-able
         result_box.configure(state="disabled")
 
+    #close app
     def close_app():
         root.destroy()
 
-    # *-----* import from parser *-----*
+    #parse the user
     def user_parsed(user_search_input):
         psr = Parser()
         return psr.parse(user_search_input)
@@ -142,15 +157,15 @@ if __name__ == "__main__":
         ]
 
 
+        #innit frames for putting widgets in
         help_frame = cttk.CTkFrame(help_window)
         help_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky=(N, S))
 
+        #innit widgets and put them in frame
         help_box = cttk.CTkTextbox(help_frame, width=425, height=300)
         help_box.grid(row=1, column=0, padx=10, pady=(10, 0), sticky=(N, S))
 
-        top_close_button = cttk.CTkButton(
-            help_window, text="close", command=help_window.destroy
-        )
+        top_close_button = cttk.CTkButton(help_window, text="close", command=help_window.destroy)
         top_close_button.grid(row=2, column=0, padx=10, pady=(10, 0), sticky=(N, S))
 
         for text in help_information2:
