@@ -2,6 +2,8 @@
 from tkinter import *
 from tkinter import ttk
 import customtkinter as cttk
+from cryptography.hazmat.asn1.asn1 import NoneType
+
 from parser import Parser
 from movie import Movie, do_query
 
@@ -12,6 +14,7 @@ if __name__ == "__main__":
 
     # init vars
     RESOLUTION = "700x600"
+    HELPRESOLUTION = "350x500"
 
     # tkinter preference stuff
     cttk.set_appearance_mode("dark")
@@ -39,9 +42,18 @@ if __name__ == "__main__":
     #*-----* Methods *-----*
     #search method
     def search():
-        print(search_box.get())
-        user_q(search_box.get())
-        fill_results(['1', '2', '3', '4', '5', search_box.get()])
+        search_input = search_box.get()
+
+        if search_input == NoneType:
+            pass
+        else:
+            results = user_q(search_box.get())
+            result_list = []
+
+            for value in results:
+                result_list.append(value)
+
+            fill_results(user_q(search_box.get()))
         
         
     def user_q(user_search_input):
@@ -51,22 +63,29 @@ if __name__ == "__main__":
         if parse_results[0]:
 
             #results will contain list of movie objects if query valid, otherwise it will contain (False, errorMessage)
-            results = do_query(parse_results[1])
-            for result in results:
-                print(str(result))
+            #TODO: this is returning the parse reults only, not any database q from results
+            # need to have it return movie items, then display.
+            parse_dict = parse_results[1]
+            print_results=[]
+            print(parse_dict)
+            for key in parse_dict:
+                print_results.append(key)
 
         else:
             #TODO: handle invalid queries here
-            pass
-        
-        fill_results(results)
+            print_results = [parse_results[1]]
+
+        fill_results(print_results)
 
     def fill_results(results):
+
         result_box.configure(state="normal")
         result_box.delete(1.0 ,END)
+
         for line in results:
             result_box.insert(END, line)
             result_box.insert(END, "\n")
+
         result_box.configure(state="disabled")
         
     def close_app():
@@ -82,28 +101,32 @@ if __name__ == "__main__":
     def open_help_window():
         help_window = Toplevel()
         help_window.geometry(HELPRESOLUTION)
-        
-        help_window.label = cttk.CTkLabel(text = "Parser Information:")
-        help_information = ["help info starts here",
-                            "random information",
-                            "help info ends here"]
+
+        help_information = ["example queries:",
+            "series == 'Divergent Collection'",  # handles quoted + unquoted strings
+            "Date > 2010-01-01",
+            "TITLE == The Hills Have Eyes",
+            "rating <= 6.0",
+            "rating > 3 AND rating < 7",  # conjoined statement ex.
+            "series == None OR rating == 0.0",  # NULL series ex. (optional field)
+        ]
         
         
         help_frame = cttk.CTkFrame(help_window)
         help_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky=(N, S))
         
-        help_box = cttk.CTkEntry(help_frame, width=300, height=30)
+        help_box = cttk.CTkTextbox(help_frame, width=300, height=300)
         help_box.grid(row=1, column=0, padx=10, pady=(10, 0), sticky=(N,S))
         
         top_close_button = cttk.CTkButton(help_window,
                 text = "close", command = help_window.destroy)
         top_close_button.grid(row=2, column=0, padx=10, pady=(10, 0),
                               sticky=(N,S))
-        i = 0
+
+
         for text in help_information:
-            help_box.insert(i, text)
-            help_box.insert(i, "\n")
-            i += 1
+            help_box.insert(END, text)
+            help_box.insert(END, "\n")
             
         help_box.configure(state='disabled')
         
@@ -129,6 +152,10 @@ if __name__ == "__main__":
     # close button
     close_button = cttk.CTkButton(option_frame, text="close", command=close_app)
     close_button.grid(row=0, column=1, padx=5, pady=5, sticky=(E, W))
+
+    #help button
+    help_button = cttk.CTkButton(option_frame, text="help", command=open_help_window)
+    help_button.grid(row=0, column=0, padx=5, pady=5, sticky=(E, W))
 
     # *-----* Main Loop *-----*
     root.mainloop()
