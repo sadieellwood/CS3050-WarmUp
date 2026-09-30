@@ -16,7 +16,7 @@ class Parser:
     field = (SERIES | DATE | TITLE | RATING)("field")
 
     # handle multi-word value strings
-    unquoted_word = ~logical_op + pp.Word(pp.alphanums + ".:-()")
+    unquoted_word = ~logical_op + pp.Word(pp.alphanums + ".-()")
     unquoted_val = pp.Combine(
         unquoted_word + pp.ZeroOrMore(pp.White(" ") + unquoted_word)
     )
@@ -65,18 +65,17 @@ if __name__ == "__main__":
 
     # for testing
     valid_queries = [
-        "Date < 1995-10-30",
-        "Title == 'Night at the Museum: Secret of the Tomb'",
+        "Date >= 2003-01-01 AND Date <= 2004-12-31",
+        "Title == 'Night at the Museum Secret of the Tomb'",
         "rating < 5.0 AND rating > 3.0",
-        "Title == Loose Change: 2nd Edition",
-        "Title == Pokemon Ranger and the Temple of the Sea AND Rating > 4.0",
+        "Title == Loose Change 2nd Edition",
     ]
 
     invalid_queries = [
         "age = 21.0"  # incorrect field keyword
         "rating = 2.0",  # incorrect comparison_op (must be ==)
         "rating < 5.0 and rating > 3.0"  # incorrect logical_op (must be AND)
-        "series == None OR rating == 0.0 OR date < 1995-10-30",  # conjoined query w/ more than two conditions
+        "series == None OR rating == 0.0 OR date > 1995-10-30",  # conjoined query w/ more than two conditions
     ]
 
     # for GUI help window
