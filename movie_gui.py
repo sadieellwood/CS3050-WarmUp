@@ -65,11 +65,11 @@ if __name__ == "__main__":
             #results will contain list of movie objects if query valid, otherwise it will contain (False, errorMessage)
             #TODO: this is returning the parse reults only, not any database q from results
             # need to have it return movie items, then display.
-            parse_dict = parse_results[1]
-            print_results=[]
-            print(parse_dict)
-            for key in parse_dict:
-                print_results.append(key)
+            print_results = []
+            movie_list = do_query(parse_results[1])
+
+            for value in movie_list:
+                print_results.append(str(value))
 
         else:
             #TODO: handle invalid queries here
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
         for line in results:
             result_box.insert(END, line)
-            result_box.insert(END, "\n")
+            result_box.insert(END, "\n---------------- \n")
 
         result_box.configure(state="disabled")
         
