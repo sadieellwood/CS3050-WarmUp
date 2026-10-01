@@ -71,6 +71,8 @@ if __name__ == "__main__":
             if query_results[0]:
                 for value in query_results[1]:
                     print_results.append(str(value))
+                if query_results[1] == []:
+                    print_results = ["No movies in the database match that criteria!"]
             #otherwise print error
             else:
                 print_results = [query_results[1]]

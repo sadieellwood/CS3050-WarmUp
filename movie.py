@@ -61,7 +61,7 @@ def validate_query(query_spec):
     # convert date into actual date object with try except
     try:
         # checking that rating is a number
-        current_test = ("Rating", "a number")
+        current_test = ("Rating", "a number.")
         for key in query_spec.keys():
             if key == "logical_op":
                 pass
@@ -74,7 +74,7 @@ def validate_query(query_spec):
                     raise ValueError
 
         # checking that date is actually a date
-        current_test = ("Date", "a date in the form YYYY-MM-DD")
+        current_test = ("Date", "a date in the form YYYY-MM-DD.")
         for key in query_spec.keys():
             if key == "logical_op":
                 pass
@@ -90,12 +90,12 @@ def validate_query(query_spec):
                 pass
 
             elif "title" in query_spec[key].values():
-                current_test = ("title", "used with ==")
+                current_test = ("Title", "used with the == operator.")
                 if query_spec[key]["comparison_op"] != "==":
                     raise ValueError
 
             elif "series" in query_spec[key].values():
-                current_test = ("series", "used with ==")
+                current_test = ("Series", "used with the == operator.")
                 if query_spec[key]["comparison_op"] != "==":
                     raise ValueError
                 # converting "None" string to type None
